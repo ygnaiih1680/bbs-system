@@ -24,53 +24,55 @@
         String jdbcurl = "jdbc:mysql://localhost:3306/board_db";
         connection = DriverManager.getConnection(jdbcurl, "root", "vmffkd@495");
         statement = connection.createStatement();
-        String sql = "select * from board_tbl order by ref desc, id asc";
+        String sql = "select * from board_db.board_tbl order by ref desc, id";
         resultSet = statement.executeQuery(sql);
     } catch (Exception e) {
         System.out.println("DB 연동 오류입니다 : " + e.getMessage());
     }
 %>
-<center>
-    <table style="text-align: center" border="1">
-        <thead>
-        <tr style="background-color: lightgray">
-            <%for (int i = 0; i < header.length; i++) {%>
-            <th style="width: <%=hWidth[i]%>px"><%=header[i]%>
-            </th>
-            <%}%>
-        </tr>
-        </thead>
-        <tr>
-            <% try {
-                if (resultSet != null) {
-                    int count = 1;
-                    while (resultSet.next()) {
-            %>
-            <td><%=count%>
-            </td>
-            <td><%=resultSet.getString("name")%>
-            </td>
-            <%int ref = resultSet.getInt("ref"), id = resultSet.getInt("id");
-                String title = resultSet.getString("title");
-                if (ref!=id) {
-                    title = reference+title;}
-            %>
-            <td><%=title%>
-            </td>
-            <td><%=resultSet.getString("e_mail")%>
-            </td>
-            <%
-                            count++;
-                        }
-                    }
-                } catch (Exception e) {
+<table style="margin-left: auto; margin-right: auto; text-align: center" border="1">
+    <thead>
+    <tr style="background-color: lightgray">
+        <%for (int i = 0; i < header.length; i++) {%>
+        <th style="width: <%=hWidth[i]%>px"><%=header[i]%>
+        </th>
+        <%}%>
+    </tr>
+    </thead>
+
+    <% try {
+        if (resultSet != null) {
+            resultSet.last();
+            int count = resultSet.getRow();
+            resultSet.beforeFirst();
+            while (resultSet.next()) {
+    %>
+    <tr>
+        <td><%=count%>
+        </td>
+        <td style="text-align: left"><%=resultSet.getString("name")%>
+        </td>
+        <%
+            int ref = resultSet.getInt("ref"), id = resultSet.getInt("id");
+            String title = resultSet.getString("title");
+        %>
+        <td><%if (ref!=id){%><%=reference%><%}%>&nbsp;<a href="board-read.jsp?id=<%=id%>"> <%=title%>
+        </a>
+        </td>
+        <td><%=resultSet.getString("e_mail")%>
+        </td>
+    </tr>
+    <%
+                    count--;
                 }
-            %>
-        </tr>
-    </table>
-</center>
+            }
+        } catch (Exception e) {
+        }
+    %>
+
+</table>
 <div style="text-align: center"><img src="image/green_tree.gif" alt="tree"><a href="board-insert.jsp">게시글 쓰기</a></div>
 <br>
-<div style="text-align: center"><img src="image/island.gif" alt="island" width="70%"></div>
+<div style="text-align: center"><img src="image/island.gif" alt="island" width="90%"></div>
 </body>
 </html>

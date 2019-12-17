@@ -56,7 +56,7 @@
                     title = reference+title;}
             %>
             <td><a href="board-read.jsp"><%=title%></a>
-            </td>\
+            </td>
             <td><%=resultSet.getString("e_mail")%>
             </td>
             <%
@@ -71,6 +71,6 @@
 </center>
 <div style="text-align: center"><img src="image/green_tree.gif" alt="tree"><a href="board-insert.jsp">게시글 쓰기</a></div>
 <br>
-<div style="text-align: center"><img src="image/island.gif" alt="island" width="70%"></div>
+<div style="text-align: center"><img src="image/island.gif" alt="island" width="90%"></div>
 </body>
 </html>
